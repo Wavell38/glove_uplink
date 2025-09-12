@@ -32,26 +32,23 @@ set(PICO_BOARD pico CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(glove_uplink C CXX ASM)
+project(test C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(glove_uplink
-    "src/main.cpp"
-    "src/crc32c.cpp"
-    "src/cobs.cpp"
-    "src/scan.cpp"
+add_executable(test
+    "test/test.cpp"
 )
 
-pico_set_program_name(glove_uplink "glove_uplink")
-pico_set_program_version(glove_uplink "0.1")
+pico_set_program_name(test "test")
+pico_set_program_version(test "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(glove_uplink 0)
-pico_enable_stdio_usb(glove_uplink 1)
+pico_enable_stdio_uart(test 0)
+pico_enable_stdio_usb(test 1)
 
 
 # Add the standard include files to the build
@@ -69,13 +66,8 @@ target_link_libraries(glove_uplink
 )
 
 target_compile_definitions(glove_uplink PRIVATE
-    ENABLE_DATA_TX=1
-    LOG_EVERY_MS=1000
-    UART_BAUD=2000000
-    UART_TX_PIN=0 
-    UART_RX_PIN=1
-    PIN_I2C_SDA=26
-    PIN_I2C_SCL=27
+  ENABLE_DATA_TX=1     # 0 = ne PAS envoyer vers le Pi pendant les tests
+  LOG_EVERY_MS=1000    # stats toutes 1000 ms
 )
 
 pico_add_extra_outputs(glove_uplink)
